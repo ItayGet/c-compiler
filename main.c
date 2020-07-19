@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "token.h"
 #include "tlnode.h"
+#include "tbnode.h"
 
 int isDigit(char c) {
 	return c >= '0' && c <= '9';
@@ -27,12 +28,11 @@ tlNode* lexString(const char* str) {
 		}
 		
 		if(root) {
-			addToken(curr, &t );
+			addTlNode(curr, &t );
 			curr = curr->next;
 		} else {
-			root = malloc(sizeof(token));
+			root = tlNodeInit(&t);
 			curr = root;
-			curr->tok = t;
 			curr->next = NULL;
 		}
 	}
@@ -52,24 +52,45 @@ int calcOperation(const token* a, const token* op, const token* b) {
 	}
 }
 
-void parseExpression(tlNode* n) {
-	while(n->next) {
-		tlNode *op = n->next, *arg2 = n->next->next;
-		n->tok.integer = calcOperation(&n->tok, &op->tok, &arg2->tok);
+tbNode* parseExpression(tlNode* n) {
+	if(!n->next) {
+		tbNode* t = tbNodeInit(&n->tok);
+		cleanTlNode(n);
+		return t;
+	}
 
-		// Delete operation and second argument
-		n->next = arg2->next;
-		arg2->next = NULL;
-		cleanTlNode(op);
+	tlNode *root = n, *prev;
+	while(n) {
+		if(n->tok.type == TTOP) { 
+			tbNode* t = tbNodeInit(&n->tok);
+			
+			// Left side
+			prev->next = NULL;
+			t->left = parseExpression(root);
+	
+			// Right side
+			t->right = parseExpression(n->next);
+
+			// Clean up operator
+			free(n);
+
+			return t;
+		}
+		prev = n;
+		n = n->next;
 	}
 }
 
 void main() {
 	tlNode* n =  lexString("1+1 +5 -4 - 6 +7-5");
+	tbNode* t = parseExpression(n);
+	tlNode* inOrder = tbNodeInorder(t);
+
 	printTlNode(n);
-	parseExpression(n);
+	printf("\n");
+	printTlNode(inOrder);
 
-	printf("%d\n", n->tok.integer);
-
+	cleanTlNode(inOrder);
 	cleanTlNode(n);
+	cleanTbNode(t);
 }

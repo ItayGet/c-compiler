@@ -1,7 +1,10 @@
-#include <stdio.h>
 #include "tlnode.h"
 
-void addToken(tlNode* last, const token* tok) {
+#include <stddef.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+void addTlNode(tlNode* last, const token* tok) {
 	last->next = malloc(sizeof(tlNode));
 	last->next->tok = *tok;
 	last->next->next = NULL;
@@ -30,4 +33,17 @@ void cleanTlNode(tlNode* node) {
 		free(node);
 		node = tmp;
 	}
+}
+
+tlNode* lastTlNode(tlNode* node) {
+	while(node->next)
+		node = node->next;
+
+	return node;
+}
+
+tlNode* tlNodeInit(const token* tok) {
+	tlNode* n = malloc(sizeof(tlNode));
+	n->tok = *tok;
+	return n;
 }

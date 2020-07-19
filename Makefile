@@ -5,7 +5,7 @@ LIBS =
 
 DEPS = 
 
-OBJ = main.o tlnode.o
+OBJ = main.o tlnode.o tbnode.o
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)

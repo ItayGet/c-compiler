@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stddef.h>
-#include <stdlib.h>
 #include "token.h"
 
 typedef struct tlNode {
@@ -9,6 +7,8 @@ typedef struct tlNode {
 	struct tlNode* next;
 } tlNode;
 
-void addToken(tlNode* last, const token* tok);
+void addTlNode(tlNode* last, const token* tok);
 void printTlNode(const tlNode* node);
 void cleanTlNode(tlNode* node);
+tlNode* lastTlNode(tlNode* node);
+tlNode* tlNodeInit(const token* tok); 
