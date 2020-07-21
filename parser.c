@@ -1,6 +1,29 @@
 #include "parser.h"
 
 #include <stdlib.h>
+#include <stdbool.h>
+
+static char orderOfOp[][2] = {
+	{
+		'+',
+		'-'
+	},
+	{
+		'*',
+		'/'
+	},
+};
+
+static bool isCharInArray(const char* arr, int len, char c) {
+	for(int i = 0; i < len; ++i) {
+		if(arr[i] == c)
+			return true;
+	}
+
+	return false;
+}
+
+#define sizeof_arr(arr) sizeof(arr)/sizeof(arr[0])
 
 tbNode* parseExpression(tlNode* n) {
 	if(!n->next) {
@@ -8,10 +31,22 @@ tbNode* parseExpression(tlNode* n) {
 	 	cleanTlNode(n);
 	 	return t;
 	}
+
+	for(int i = 0; i < sizeof_arr(orderOfOp); ++i) {
+		tbNode* t = parseOrderOfOp(n, i);
+
+		if(t)
+			return t;
+	}
 	
+	
+}
+
+tbNode* parseOrderOfOp(tlNode* n, int order) {
 	tlNode *root = n, *prev;
 	while(n) {
-		if(n->tok.type == TTOP) { 
+		bool isOp = n->tok.type == TTOP;
+		if(isOp && isCharInArray(orderOfOp[order], sizeof_arr(orderOfOp[order]), n->tok.c)) { 
 			tbNode* t = tbNodeInit(&n->tok);
 			
 			// Left side
@@ -29,4 +64,6 @@ tbNode* parseExpression(tlNode* n) {
 		prev = n;
 		n = n->next;
 	}
+
+	return NULL;
 }

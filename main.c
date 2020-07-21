@@ -7,8 +7,24 @@
 #include "lexer.h"
 #include "parser.h"
 
+static char orderOfOp[][2] = {
+	{
+		'*',
+		'/'
+	},
+	{
+		'+',
+		'-'
+	},
+};
+
+void raiseError(const char* err) {
+	fprintf(stderr, err);
+	exit(-1);
+}
+
 void main() {
-	tlNode* n =  lexString("1+1+5-4-6+7-5");
+	tlNode* n =  lexString("1*2 + 3/ 4 + 1");
 	printTlNode(n);
 
 	tbNode* t = parseExpression(n);

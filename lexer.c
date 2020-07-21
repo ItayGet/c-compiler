@@ -7,7 +7,7 @@ static int isDigit(char c) {
 }
 
 static int isOp(char c) {
-	return c == '+' || c == '-';
+	return c == '+' || c == '-' || c == '*' || c == '/';
 }
 
 tlNode* lexString(const char* str) {
