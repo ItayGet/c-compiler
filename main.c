@@ -7,17 +7,6 @@
 #include "lexer.h"
 #include "parser.h"
 
-static char orderOfOp[][2] = {
-	{
-		'*',
-		'/'
-	},
-	{
-		'+',
-		'-'
-	},
-};
-
 void raiseError(const char* err) {
 	fprintf(stderr, err);
 	exit(-1);
