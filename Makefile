@@ -13,6 +13,9 @@ OBJ = main.o tlnode.o tbnode.o lexer.o parser.o
 main: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
+debug: CFLAGS += -g
+debug: main
+
 .PHONY: clean
 
 clean:
