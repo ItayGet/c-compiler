@@ -13,7 +13,7 @@ void raiseError(const char* err) {
 }
 
 void main() {
-	tlNode* n =  lexString("1*(2 + 3)/ 4 + 1");
+	tlNode* n =  lexString("15555555*(2 + 3)/ 4 + 1");
 	printTlNode(n);
 
 	tbNode* t = parseExpression(n);

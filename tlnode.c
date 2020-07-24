@@ -13,16 +13,16 @@ void addTlNode(tlNode* last, const token* tok) {
 void printTlNode(const tlNode* node) {
 	const tlNode* curr = node;
 	while(curr) {
-		char val;
+		printf("{ %d, ", curr->tok.type);
 		switch(curr->tok.type) {
 			case TTINTEGER:
-				val = curr->tok.integer + '0';
+				printf("%d", curr->tok.integer);
 				break;
 			default:
-				val = curr->tok.c;
+				printf("%c", curr->tok.c);
 		}
 
-		printf("{ %d, %c }\n", curr->tok.type, val);
+		printf(" }\n");
 		curr = curr->next;
 	}
 }

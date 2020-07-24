@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -I.
 
-LIBS = 
+LIBS = -lm
 
 DEPS = 
 
