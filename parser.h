@@ -5,3 +5,4 @@
 
 tbNode* parseExpression(tlNode* n);
 tbNode* parseOrderOfOp(tlNode* n, int order);
+tbNode* parseParentheses(tlNode* n);
