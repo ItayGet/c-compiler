@@ -5,7 +5,7 @@ LIBS = -lm
 
 DEPS = 
 
-OBJ = main.o tlnode.o tbnode.o lexer.o parser.o
+OBJ = main.o tlnode.o tbnode.o lexer.o parser.o error.o
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)

@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
+#include "error.h"
 
 static char orderOfOp[][2] = {
 	{
@@ -29,9 +30,15 @@ tbNode* parseExpression(tlNode* n) {
 	tbNode* t;
 
 	if(!n->next) {
-	 	t = tbNodeInit(&n->tok);
-	 	cleanTlNode(n);
-	 	return t;
+		
+		switch(n->tok.type) {
+		case TTINTEGER:
+			t = tbNodeInit(&n->tok);
+			cleanTlNode(n);
+			return t;
+		default:
+			raiseError("Expected symbol or constant");
+		}
 	}
 
 	t = parseParentheses(n);
@@ -44,6 +51,8 @@ tbNode* parseExpression(tlNode* n) {
 		if(t)
 			return t;
 	}
+
+	raiseError("Expected an operation but got none");
 	
 	
 }
@@ -63,8 +72,7 @@ tbNode* parseOrderOfOp(tlNode* n, int order) {
 					--nestLevel;
 
 					if(nestLevel < 0) {
-						// Error: unmatched parentheses
-						exit(-1);
+						raiseError("Unmatched parentheses");	
 					}
 					break;
 			}
@@ -92,6 +100,9 @@ tbNode* parseOrderOfOp(tlNode* n, int order) {
 		prev = n;
 		n = n->next;
 	}
+
+	if(nestLevel > 0)
+		raiseError("Unmatched parentheses");
 
 	return NULL;
 }
