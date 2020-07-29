@@ -18,8 +18,12 @@ void printTlNode(const tlNode* node) {
 			case TTINTEGER:
 				printf("%d", curr->tok.integer);
 				break;
+			case TTIDENTIFIER:
+				printf(curr->tok.str);
+				break;
 			default:
 				printf("%c", curr->tok.c);
+				break;
 		}
 
 		printf(" }\n");
@@ -27,9 +31,12 @@ void printTlNode(const tlNode* node) {
 	}
 }
 
-void cleanTlNode(tlNode* node) {
+void cleanTlNode(tlNode* node, bool cleanInside) {
 	while(node) {
 		tlNode* tmp = node->next;
+
+		if(cleanInside) { cleanToken(&node->tok); }
+
 		free(node);
 		node = tmp;
 	}

@@ -18,11 +18,13 @@ tlNode* tbNodeInorder(const tbNode* t) {
 	return n;
 }
 
-void cleanTbNode(tbNode* t) {
+void cleanTbNode(tbNode* t, bool cleanInside) {
 	if(!t) return;
 
-	cleanTbNode(t->left);
-	cleanTbNode(t->right);
+	cleanTbNode(t->left, cleanInside);
+	cleanTbNode(t->right, cleanInside);
+	
+	if(cleanInside) { cleanToken(&t->tok); }
 
 	free(t);
 }

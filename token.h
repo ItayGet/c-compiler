@@ -4,6 +4,7 @@ typedef enum {
 	TTINTEGER,
 	TTOP,
 	TTPARENTHESIS,
+	TTIDENTIFIER,
 } tokenType;
 
 typedef struct {
@@ -11,5 +12,8 @@ typedef struct {
 	union {
 		char c;
 		int integer;
+		char* str;
 	};
 } token;
+
+void cleanToken(token* tok);

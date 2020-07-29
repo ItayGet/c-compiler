@@ -33,12 +33,17 @@ tbNode* parseExpression(tlNode* n) {
 		
 		switch(n->tok.type) {
 		case TTINTEGER:
+		case TTIDENTIFIER:
 			t = tbNodeInit(&n->tok);
-			cleanTlNode(n);
+			free(n);
 			return t;
 		default:
-			raiseError("Expected symbol or constant");
+			raiseError("Expected identifier or constant");
 		}
+	}
+
+	if(!n->next->next) {
+		raiseError("Expected indentifier or constant after operator");
 	}
 
 	t = parseParentheses(n);
@@ -120,7 +125,7 @@ tbNode* parseParentheses(tlNode* n) {
 
 	tlNode* next = n->next;
 
-	cleanTlNode(prevToLast->next);
+	cleanTlNode(prevToLast->next, true);
 	n->next = NULL;
 	prevToLast->next = NULL;
 	
